@@ -6,6 +6,7 @@
     <title>zonegoh - instagram - youtube</title>
     <link href='https://cdn.jsdelivr.net/npm/boxicons@2.0.5/css/boxicons.min.css' rel='stylesheet'>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 </head>
 <body>
     <div class="content">
@@ -116,6 +117,44 @@
             menu.querySelector('button:nth-child(3)').classList.add('active')
         }
     })
+
+    $(document).ready(function() {
+        const MEDIUM_LINK = "https://api.rss2json.com/v1/api.json?rss_url=https://medium.com/feed/@zonegoh";
+        $.ajax({
+            url: MEDIUM_LINK,
+            dataType: 'json',
+            type: 'GET',
+            success: function(data) {
+                if (data.status == 'ok') {
+                    $('.con-posts').html('')
+                    $.each(data.items, function(index) {
+                        $('.con-posts').append(`
+                        <a class="post" target="_blank" href="`+data.items[index].link+`">
+                            <div class="con-file">
+                                <img src="`+data.items[index].thumbnail+`" alt>
+                            </div>
+
+                            <footer>
+                                <h3>
+                                    Medium
+                                </h3>
+                                <p>
+                                    `+data.items[index].title+`
+                                </p>
+                            </footer>
+
+                            <div class="effect"></div>
+                        </a>
+                        `);
+                    });
+                }
+            },
+            error: function(data) {
+                console.log(data)
+            }
+        });
+    })
+
 </script>
 <style>
     body {
